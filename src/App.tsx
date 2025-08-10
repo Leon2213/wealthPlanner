@@ -1,35 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  BarChart,
-  Bar,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Line,
-} from "recharts";
-import { NumericFormat } from "react-number-format";
 import InputRow from "./InputRow.tsx";
-import Legend from "./Legend.tsx";
-import MilestoneSummary from "./MilestoneSummary.tsx";
 import MillionList from "./MillionList.tsx";
-import CustomTooltip from "./CustomTooltip.tsx";
 import Graph from "./Graph.tsx";
 import SummaryInsights from "./SummaryInsights.tsx";
-function formatNumber(num: number): string {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
+import { DataPoint, ColorMap, SummaryInsightsProps, GraphProps, MillionListProps, MillionMilestone, InputRowProps } from "./types";
 
-interface DataPoint {
-  year: number;
-  start: number;
-  amortering: number;
-  sparande: number;
-  total: number;
-  noCompoundTotal?: number;
-  sparandeRanta?: number; // Ny property
-}
 
 const PENSION_AGE = 65;
 
@@ -140,6 +115,11 @@ const App: React.FC = () => {
     };
   }
 
+  function formatNumber(num: number): string {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+
   // Funktion för att hitta när varje miljon nås
   function millionMilestones(data: DataPoint[], startAge: number) {
     const result: { million: number; year: number; months: number; age: number }[] = [];
@@ -175,6 +155,50 @@ const App: React.FC = () => {
   const maxMiljon = Math.ceil(maxY / 1_000_000);
   const yTicks = Array.from({ length: maxMiljon + 1 }, (_, i) => i * 1_000_000);
 
+  // Innan return i App-komponenten:
+const summaryInsightsProps: SummaryInsightsProps = {
+  milestones: MILESTONES,
+  milestoneSummary,
+  COLORS,
+  startNetworth,
+  formatNumber,
+};
+
+const graphProps: GraphProps = {
+  data,
+  COLORS,
+  startAge,
+  startNetworth,
+  sparande,
+  amorteringValue,
+  formatNumber,
+  compound,
+  includeAmortering,
+  showAgeOnXAxis,
+  setShowAgeOnXAxis,
+};
+
+const inputRowProps: InputRowProps = {
+  startAge,
+  setStartAge,
+  effectiveYears,
+  years,
+  setYears,
+  tillPension,
+  setTillPension,
+  startNetworth,
+  setStartNetworth,
+  amortering,
+  setAmortering,
+  sparande,
+  setSparande,
+  compound,
+  setCompound,
+  COLORS,
+  includeAmortering,
+  setIncludeAmortering,
+};
+
   return (
     <div
       style={{
@@ -187,25 +211,7 @@ const App: React.FC = () => {
       Ekonomiprognos
     </h1>
       {/* Första rad: Ålder, år, checkbox */}
-      <InputRow
-        startAge={startAge}
-        setStartAge={setStartAge}
-        effectiveYears={effectiveYears}
-        years={years}
-        setYears={setYears}
-        tillPension={tillPension}
-        setTillPension={setTillPension}
-        startNetworth={startNetworth}
-        setStartNetworth={setStartNetworth}
-        amortering={amortering}
-        setAmortering={setAmortering}
-        sparande={sparande}
-        setSparande={setSparande}
-        compound={compound}
-        setCompound={setCompound}
-        COLORS={COLORS}
-        includeAmortering={includeAmortering}
-        setIncludeAmortering={setIncludeAmortering}
+      <InputRow {...inputRowProps}
       />
 
       
@@ -222,29 +228,8 @@ const App: React.FC = () => {
           alignItems: "flex-start",
         }}
       >
-        {/* Grafen */}
-        <Graph
-          data={data}
-          COLORS={COLORS}
-          startAge={startAge}
-          startNetworth={startNetworth}
-          sparande={sparande}
-          amorteringValue={amorteringValue}
-          formatNumber={formatNumber}
-          compound={compound}
-          includeAmortering={includeAmortering}
-          showAgeOnXAxis={showAgeOnXAxis}
-          setShowAgeOnXAxis={setShowAgeOnXAxis}
-        />
-
-        {/* Summering med milstolpar */}
-        <SummaryInsights
-          milestones={MILESTONES}
-          milestoneSummary={milestoneSummary}
-          COLORS={COLORS}
-          startNetworth={startNetworth}
-          formatNumber={formatNumber}
-        />
+        <Graph {...graphProps}/>
+        <SummaryInsights {...summaryInsightsProps} />
 
         {/* Skala ner MillionList till 80% */}
         <div style={{ display: "flex", justifyContent: "center", width: "100%", marginTop: 0 }}>

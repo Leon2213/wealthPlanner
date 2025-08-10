@@ -1,5 +1,6 @@
 import React from "react";
 import { NumericFormat } from "react-number-format";
+import { InputRowProps } from "./types";
 
 const labelStyle = { minWidth: 160, display: "flex", flexDirection: "column", alignItems: "flex-start" };
 const inputStyle = { width: 120, padding: 6 };
@@ -14,7 +15,7 @@ const colorBoxStyle = (color: string) => ({
   marginLeft: 8,
 });
 
-const InputRow = ({
+const InputRow: React.FC<InputRowProps> = ({
   startAge, setStartAge,
   effectiveYears, years, setYears,
   tillPension, setTillPension,

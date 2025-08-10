@@ -1,12 +1,6 @@
 import React from "react";
+import { SummaryInsightsProps } from "./types";
 
-interface SummaryInsightsProps {
-  milestones: number[];
-  milestoneSummary: (age: number) => any;
-  COLORS: any;
-  startNetworth: number;
-  formatNumber: (num: number) => string;
-}
 
 const SummaryInsights: React.FC<SummaryInsightsProps> = ({
   milestones,

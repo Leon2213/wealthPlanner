@@ -1,8 +1,6 @@
 import React from "react";
+import { MillionListProps } from "./types";
 
-interface MillionListProps {
-  millionList: { million: number; year: number; months: number; age: number }[];
-}
 
 const MillionList: React.FC<MillionListProps> = ({ millionList }) => (
   <div

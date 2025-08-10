@@ -10,20 +10,8 @@ import {
   Line,
 } from "recharts";
 import CustomTooltip from "./CustomTooltip.tsx";
+import { GraphProps } from "./types";
 
-interface GraphProps {
-  data: any[];
-  COLORS: any;
-  startAge: number;
-  startNetworth: number;
-  sparande: number;
-  amorteringValue: number;
-  formatNumber: (num: number) => string;
-  compound: boolean;
-  includeAmortering: boolean;
-  showAgeOnXAxis: boolean;
-  setShowAgeOnXAxis: (v: boolean) => void;
-}
 
 const Graph: React.FC<GraphProps> = ({
   data,
