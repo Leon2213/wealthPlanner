@@ -7,4 +7,5 @@ Project goal to learn more react. Heavily "vibe-coded" using co-pilot.
 <br>
 <br>
 <br>
+summary per year
 ![WealthPlanner 3](wealthplanner3.PNG)
